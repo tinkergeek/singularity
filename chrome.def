@@ -1,0 +1,25 @@
+# Example command:
+#singularity exec --bind /var/opt:/var/opt <image_location>  google-chrome --no-sandbox
+
+BootStrap: docker
+From: ubuntu:16.10
+
+%post
+
+apt-get update && apt-get -y upgrade
+
+apt-get install -y --no-install-recommends \
+	curl wget git rsync unzip zip libxss1 libappindicator1 libindicator7 xauth
+
+apt-get install -y --no-install-recommends lxde
+
+apt-get clean
+
+wget --no-check-certificate https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+dpkg -i google-chrome-stable_current_amd64.deb || :
+
+apt-get -f install -y
+
+dpkg -i google-chrome-stable_current_amd64.deb
+

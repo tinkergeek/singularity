@@ -1,0 +1,21 @@
+# Example command:
+# singularity exec --bind /opt:/opt --bind /etc/profile.d/modules.sh:/etc/profile.d/modules.sh $PATH_TO_CONTAINER /bin/bash
+# source /etc/profile.d/modules.sh
+
+BootStrap: yum
+OSVersion: 6
+MirrorURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/os/$basearch/
+Include: yum
+
+UpdateURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/updates/$basearch/
+
+%runscript
+source /opt/profile.d/modules.sh
+exec "$@"
+
+%post
+    yum -y install epel-release
+    yum -y install vim-minimal bash-completion Lmod hostname
+    yum -y groupinstall 'Development Tools'
+    touch /etc/profile.d/modules.sh
+    mkdir -p /home /apps /scratch /depot
