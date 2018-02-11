@@ -1,0 +1,8 @@
+Bootstrap: docker
+From: fedora:latest
+
+%post
+
+yum clean all
+yum -y install libguestfs libguestfs-xfs libguestfs-bash-completion libguestfs-tools libguestfs-rescue
+
